@@ -69,11 +69,23 @@
 			if($lang["langCode"] == "fr") $baseURL = "http://touhou.net/thwiki/";
 			else if($lang["langCode"] == "de") $baseURL = "http://wiki.touhou-forum.de/wiki/";
 			else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
-						
-			$domAPI = new DomDocument();
-			$domAPI->load("" . $baseURL . $requestCall);
 			
-			$lang["articleCount"] = $domAPI->documentElement->getElementsByTagName('query')->item(0)->getElementsByTagName('statistics')->item(0)->attributes->getNamedItem('articles')->nodeValue; // behold, an article count!
+			$curl = curl_init("" . $baseURL . $requestCall);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt($curl, CURLOPT_TIMEOUT, 5 );
+			
+			$apiResponse = curl_exec($curl);
+			$apiResponse = @mb_convert_encoding($apiResponse, 'HTML-ENTITIES', 'utf-8');
+			$httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+			curl_close($curl);
+			
+			if($httpStatus == "200") {
+				$domAPI = new DomDocument();
+				$domAPI->loadXML($apiResponse);
+			
+				$lang["articleCount"] = $domAPI->documentElement->getElementsByTagName('query')->item(0)->getElementsByTagName('statistics')->item(0)->attributes->getNamedItem('articles')->nodeValue; // behold, an article count!
+			}
 		}
 		unset($lang);
 
