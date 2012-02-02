@@ -67,7 +67,7 @@
 		// populate article counts
 		foreach($langs as &$lang) {
 			if($lang["langCode"] == "fr") $baseURL = "http://touhou.net/thwiki/";
-			else if($lang["langCode"] == "de") $baseURL = "http://wiki.touhou-forum.de/wiki/";
+			else if($lang["langCode"] == "de") $baseURL = "http://wiki.touhou-forum.de/th/wiki/";
 			else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
 			
 			$curl = curl_init("" . $baseURL . $requestCall);
@@ -149,7 +149,7 @@
 			
 			
 			if($lang["langCode"] == "fr") $baseURL = "http://touhou.net/thwiki/"; // France is a very different country with a very different site
-			else if($lang["langCode"] == "de") $baseURL = "http://wiki.touhou-forum.de/wiki/";
+			else if($lang["langCode"] == "de") $baseURL = "http://wiki.touhou-forum.de/th/wiki/";
 			else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
 
 			$curLang++;

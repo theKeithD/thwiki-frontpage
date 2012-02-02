@@ -192,7 +192,7 @@ function updateSearchBar(curLangCode) {
 	if(curLangCode == "fr") { 
 		baseURL = 'http://touhou.net/thwiki/';
 	} else if(curLangCode == "de") {
-		baseURL = 'http://wiki.touhou-forum.de/wiki/';
+		baseURL = 'http://wiki.touhou-forum.de/th/wiki/';
 	} else {
 		baseURL = 'http://' + curLangCode + '.touhouwiki.net/';
 	}
