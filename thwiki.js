@@ -9,7 +9,6 @@ var curItem = 1;
 
 /* Behold, the clump of data that so much of this page depends on. */
 var langTitles = new Object;
-langTitles['de'] = ["Touhou Wiki", "Deutsch", "Suche Touhou Wiki"];
 langTitles['en'] = ["Touhou Wiki", "English", "Search Touhou Wiki"];
 langTitles['es'] = ["Touhou Wiki", "Español", "Buscar Touhou Wiki"];
 langTitles['fr'] = ["Touhou Wiki", "Français", "Rechercher Touhou Wiki"];
@@ -191,8 +190,6 @@ function updateSearchBar(curLangCode) {
 	var actionURL;
 	if(curLangCode == "fr") { 
 		baseURL = 'http://touhou.net/thwiki/';
-	} else if(curLangCode == "de") {
-		baseURL = 'http://wiki.touhou-forum.de/th/wiki/';
 	} else {
 		baseURL = 'http://' + curLangCode + '.touhouwiki.net/';
 	}

@@ -11,10 +11,7 @@
 </head>
 <body>
 <?php
-	$langs = array(	"de" => array("langCode"=>"de", "lang"=>"Deutsch", "desc"=>"Touhou Wiki", 
-								  "articlesName"=>"Artikel", "articleCount"=>"0",
-								  "searchText" => "Suche Touhou Wiki"),
-					"en" => array("langCode"=>"en", "lang"=>"English", "desc"=>"Touhou Wiki", 
+	$langs = array( "en" => array("langCode"=>"en", "lang"=>"English", "desc"=>"Touhou Wiki", 
 								  "articlesName"=>"articles", "articleCount"=>"0",
 								  "searchText" => "Search Touhou Wiki"), 
 					"es" => array("langCode"=>"es", "lang"=>"Español", "desc"=>"Touhou Wiki", 
@@ -67,7 +64,6 @@
 		// populate article counts
 		foreach($langs as &$lang) {
 			if($lang["langCode"] == "fr") $baseURL = "http://touhou.net/thwiki/";
-			else if($lang["langCode"] == "de") $baseURL = "http://wiki.touhou-forum.de/th/wiki/";
 			else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
 			
 			$curl = curl_init("" . $baseURL . $requestCall);
@@ -149,7 +145,6 @@
 			
 			
 			if($lang["langCode"] == "fr") $baseURL = "http://touhou.net/thwiki/"; // France is a very different country with a very different site
-			else if($lang["langCode"] == "de") $baseURL = "http://wiki.touhou-forum.de/th/wiki/";
 			else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
 
 			$curLang++;
@@ -162,8 +157,10 @@
 				$customStyle .= " style='width: 33%; min-width: " . floor($minRowWidth/3) . "px;'";
 			} elseif ($curLang == 6) { // this row has 3 (part 2, making it add up to 100)
 				$customStyle .= " style='width: 34%; min-width: " . floor($minRowWidth/3) . "px;'";
-			} elseif ($curLang > 7 && $curLang <= 11) { // this row has 4
-				$customStyle .= " style='width: 25%; min-width: " . floor($minRowWidth/4) . "px;'";
+			} elseif ($curLang == 8) { // this row also has 3
+				$customStyle .= " style='width: 34%; min-width: " . floor($minRowWidth/3) . "px;'";
+			} elseif ($curLang > 8 && $curLang <= 10) { // this row also has 3 (part 2, again)
+				$customStyle .= " style='width: 33%; min-width: " . floor($minRowWidth/3) . "px;'";
 			}
 			
 			// Actual HTML
