@@ -184,7 +184,7 @@
                 case 10:
                 case 11:
                 case 12:
-                    $customStyle .= " style='width: 25%; min-width: " . floor($minRowWidth/4) . "px; font-size: 70%; margin-top: 1em;'"; // row 4 has 4 items and has smaller text
+                    $customStyle .= " style='width: 25%; min-width: " . floor($minRowWidth/4) . "px; font-size: 70%; margin-top: 0.75em; margin-bottom: 0.25em;'"; // row 4 has 4 items and has smaller text
             }
             
             // Actual HTML
