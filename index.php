@@ -201,10 +201,15 @@
         }
         unset($lang);
         
-
+        // custom compare for uasort()
+        // larger articleCount wins
+        // in the event of a tie, sort by language name
         function compare_articles($a, $b) { // the larger article count wins
             if ($a["articleCount"] == $b["articleCount"]) {
-                return 0;
+                if($a["lang"] == $b["lang"]) {
+                    return 0;
+                }
+                return ($a["lang"] < $b["lang"]) ? 1 : -1;
             }
             return ($a["articleCount"] < $b["articleCount"]) ? 1 : -1;
         }
