@@ -179,10 +179,10 @@
             }
             
             // Actual HTML
-            echo "\t\t<li class='wikiLang'$customStyle><a id='wiki$curLang' lang='" . $lang["langCode"] . "'\n\t\t  href='$baseURL' title='" . $lang["lang"] . " - " . $lang["desc"] . "' tabindex='$tabindex'>\n";
-            echo "\t\t\t<div class='langName'>" . $lang["lang"] . "</div>\n";
-            echo "\t\t\t<div class='articles'>" . $lang["articleCount"] . " " . $lang["articlesName"] . "</div>\n";
-            echo "\t\t</a></li>\n";
+            echo "        <li class='wikiLang'$customStyle><a id='wiki$curLang' lang='" . $lang["langCode"] . "'\n          href='$baseURL' title='" . $lang["lang"] . " - " . $lang["desc"] . "' tabindex='$tabindex'>\n";
+            echo "            <div class='langName'>" . $lang["lang"] . "</div>\n";
+            echo "            <div class='articles'>" . $lang["articleCount"] . " " . $lang["articlesName"] . "</div>\n";
+            echo "        </a></li>\n";
         }
         unset($lang);
         
