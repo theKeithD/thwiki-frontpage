@@ -69,6 +69,9 @@
 <?php
         // populate article counts
         foreach($langs as &$lang) {
+            if($lang["langCode"] == "ko" || $lang["langCode"] == "nl") {
+                continue;
+            }
             if($lang["langCode"] == "fr") $baseURL = "http://touhou.net/thwiki/";
             else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
             
