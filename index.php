@@ -59,6 +59,7 @@
     $headerWidth = "6.5em";
     if($userLang == "zh" || $userLang == "uk") $headerWidth = "4.4em";
     else if($userLang == "sv") $headerWidth = "7em";
+    else if($userLang == "ko") $headerWidth = "9em";
 ?>
     <!-- Header -->
     <div id='wiki-logo'></div>
