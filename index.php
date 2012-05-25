@@ -174,7 +174,7 @@
             switch($curLang) {
                 case 1:
                 case 2:
-                    $customStyle .= " style='text-size: 120%;'"; // row 1 has larger text
+                    $customStyle .= " style='font-size: 120%;'"; // row 1 has larger text
                 case 3:
                 case 5:
                 case 6:
