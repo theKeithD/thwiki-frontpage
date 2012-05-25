@@ -125,7 +125,7 @@ a:hover {
 .wikiLang a .articles {
 	font-size: smaller;
 }
-.wikiLang:nth-child(3) { /* For some reason, Firefox screws up the 3rd language item. This kills the bug. */
+.wikiLang:nth-child(3), .wikiLang:nth-child(6), .wikiLang:nth-child(9) {
 	clear: both;
 }
 

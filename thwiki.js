@@ -208,7 +208,7 @@ function updateSelectedWikiLang(curLangCode) {
     // update header title
     if(curLangCode == 'sv') $('#wiki-title').css('width', '7em');
     else if(curLangCode == 'zh' || curLangCode == 'uk') $('#wiki-title').css('width', '4.4em');
-    else if(curLangCode == 'ko') $('#wiki-title').css('width', '9em');
+    else if(curLangCode == 'ko') $('#wiki-title').css('width', '8.5em');
     else $('#wiki-title').css('width', '6.5em');
     $('#wiki-title').text(langTitles[curLangCode][0]);
 }
