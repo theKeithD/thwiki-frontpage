@@ -77,10 +77,10 @@
 <?php
         // populate article counts
         foreach($langs as &$lang) {
-            if($lang["langCode"] == "ko" || $lang["langCode"] == "nl") {
+            if($lang["inactive"] || $lang["noAPICheck"]) {
                 continue;
             }
-            if($lang["external"] == true && $lang["baseURL"] == true) $baseURL = $lang["baseURL"];
+            if($lang["external"] && $lang["baseURL"]) $baseURL = $lang["baseURL"];
             else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
             
             $curl = curl_init("" . $baseURL . $requestCall);
