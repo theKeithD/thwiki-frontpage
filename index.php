@@ -27,12 +27,10 @@
                                   "inactive" => true),
                     "ko" => array("langCode"=>"ko", "lang"=>"한국어", "desc"=>"동방프로젝트 위키", 
                                   "articlesName"=>"개의 문서", "articleCount"=>"0",
-                                  "searchText" => "동방프로젝트 위키 내 검색",
-                                  "noAPICheck" => true),
+                                  "searchText" => "동방프로젝트 위키 내 검색"),
                     "nl" => array("langCode"=>"nl", "lang"=>"Nederlands", "desc"=>"Touhou Wiki", 
-                                  "articlesName"=>"-", "articleCount"=>"0",
-                                  "searchText" => "Search Touhou Wiki-",
-                                  "noAPICheck" => true),
+                                  "articlesName"=>"artikelen", "articleCount"=>"0",
+                                  "searchText" => "Zoek in Touhou Wiki"),
                     "pl" => array("langCode"=>"pl", "lang"=>"Polski", "desc"=>"Touhou Wiki", 
                                   "articlesName"=>"haseł", "articleCount"=>"0", // this is alright unless the article count ends in 1, 2, 3, or 4
                                   "searchText" => "Szukaj Touhou Wiki"),
@@ -77,7 +75,7 @@
 <?php
         // populate article counts
         foreach($langs as &$lang) {
-            if($lang["inactive"] || $lang["noAPICheck"]) {
+            if($lang["inactive"] || $lang["noAPICheck"]) { // ignore language entries with either of these flags set
                 continue;
             }
             if($lang["external"] && $lang["baseURL"]) $baseURL = $lang["baseURL"];
