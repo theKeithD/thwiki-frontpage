@@ -192,11 +192,11 @@
             echo "            <div class='langName'>" . $lang["lang"] . "</div>\n";
             if(!$lang["inactive"]) {
                 echo "            <div class='articles'>" . $lang["articleCount"];
+                if($lang["langCode"] != "ko") { // Korean value for articlesName includes a counter word attached to the number, so the space shouldn't be added
+                echo " ";
+                }
+                echo $lang["articlesName"] . "</div>\n";
             }
-            if($lang["langCode"] != "ko") { // Korean value for articlesName includes a counter word attached to the number, so the space shouldn't be added
-              echo " ";
-            }
-            echo $lang["articlesName"] . "</div>\n";
             echo "        </a></li>\n";
         }
         unset($lang);
