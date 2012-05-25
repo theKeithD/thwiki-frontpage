@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang='mul' dir='ltr'>
 <head>
     <meta charset='utf-8' />
@@ -19,31 +19,38 @@
                                   "searchText" => "Buscar Touhou Wiki"),
                     "fr" => array("langCode"=>"fr", "lang"=>"Français", "desc"=>"Touhou Wiki", 
                                   "articlesName"=>"articles", "articleCount"=>"0",
-                                  "searchText" => "Rechercher Touhou Wiki"),
+                                  "searchText" => "Rechercher Touhou Wiki",
+                                  "external" => true, "baseURL" => "http://touhou.net/thwiki/"), // France is a very different country with a very different site
                     "it" => array("langCode"=>"it", "lang"=>"Italiano", "desc"=>"Touhou Wiki", 
-                                  "articlesName"=>"voci", "articleCount"=>"0",
-                                  "searchText" => "Cerca Touhou Wiki"),
+                                  "articlesName"=>"voci", "articleCount"=>"-1",
+                                  "searchText" => "Cerca Touhou Wiki",
+                                  "inactive" => true),
                     "ko" => array("langCode"=>"ko", "lang"=>"한국어", "desc"=>"동방프로젝트 위키", 
                                   "articlesName"=>"개의 문서", "articleCount"=>"0",
-                                  "searchText" => "동방프로젝트 위키 내 검색"),
+                                  "searchText" => "동방프로젝트 위키 내 검색",
+                                  "noAPICheck" => true),
                     "nl" => array("langCode"=>"nl", "lang"=>"Nederlands", "desc"=>"Touhou Wiki", 
                                   "articlesName"=>"-", "articleCount"=>"0",
-                                  "searchText" => "Search Touhou Wiki-"),
+                                  "searchText" => "Search Touhou Wiki-",
+                                  "noAPICheck" => true),
                     "pl" => array("langCode"=>"pl", "lang"=>"Polski", "desc"=>"Touhou Wiki", 
                                   "articlesName"=>"haseł", "articleCount"=>"0", // this is alright unless the article count ends in 1, 2, 3, or 4
                                   "searchText" => "Szukaj Touhou Wiki"),
                     "pt" => array("langCode"=>"pt", "lang"=>"Português", "desc"=>"Touhou Wiki", 
-                                  "articlesName"=>"artigos", "articleCount"=>"0",
-                                  "searchText" => "Pesquisa Touhou Wiki"),
+                                  "articlesName"=>"artigos", "articleCount"=>"-1",
+                                  "searchText" => "Pesquisa Touhou Wiki",
+                                  "inactive" => true),
                     "ru" => array("langCode"=>"ru", "lang"=>"Русский", "desc"=>"Touhou-Wiki", 
                                   "articlesName"=>"статей", "articleCount"=>"0", // this is alright unless the article count ends in 1, 2, 3, or 4
                                   "searchText" => "Поиск Touhou-Wiki"),
                     "sv" => array("langCode"=>"sv", "lang"=>"Svenska", "desc"=>"Touhou-wikin", 
-                                  "articlesName"=>"artiklar", "articleCount"=>"0",
-                                  "searchText" => "Sök Touhou-wikin"),
+                                  "articlesName"=>"artiklar", "articleCount"=>"-1",
+                                  "searchText" => "Sök Touhou-wikin",
+                                  "inactive" => true),
                     "uk" => array("langCode"=>"uk", "lang"=>"Українська", "desc"=>"ТохоВікі", 
-                                  "articlesName"=>"статей", "articleCount"=>"0", // this is alright unless the article count ends in 1, 2, 3, or 4
-                                  "searchText" => "Пошук ТохоВікі"),
+                                  "articlesName"=>"статей", "articleCount"=>"-1", // this is alright unless the article count ends in 1, 2, 3, or 4
+                                  "searchText" => "Пошук ТохоВікі",
+                                  "inactive" => true),
                     "zh" => array("langCode"=>"zh", "lang"=>"中文", "desc"=>"东方维基", 
                                   "articlesName"=>"条目", "articleCount"=>"0",
                                   "searchText" => "搜索东方维基"));    
@@ -59,7 +66,7 @@
     $headerWidth = "6.5em";
     if($userLang == "zh" || $userLang == "uk") $headerWidth = "4.4em";
     else if($userLang == "sv") $headerWidth = "7em";
-    else if($userLang == "ko") $headerWidth = "9em";
+    else if($userLang == "ko") $headerWidth = "8.5em";
 ?>
     <!-- Header -->
     <div id='wiki-logo'></div>
@@ -73,7 +80,7 @@
             if($lang["langCode"] == "ko" || $lang["langCode"] == "nl") {
                 continue;
             }
-            if($lang["langCode"] == "fr") $baseURL = "http://touhou.net/thwiki/";
+            if($lang["external"] == true && $lang["baseURL"] == true) $baseURL = $lang["baseURL"];
             else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
             
             $curl = curl_init("" . $baseURL . $requestCall);
@@ -86,6 +93,7 @@
 
             curl_close($curl);
             
+            // TODO: Implement alternate/more effective sanity check. (200 OK is received even when the URL doesn't exist, which results in parsing errors)
             if($httpStatus == "200") {
                 $domAPI = new DomDocument();
                 $domAPI->loadXML($apiResponse);
@@ -154,7 +162,7 @@
             }
             
             
-            if($lang["langCode"] == "fr") $baseURL = "http://touhou.net/thwiki/"; // France is a very different country with a very different site
+            if($lang["external"] == true && $lang["baseURL"] == true) $baseURL = $lang["baseURL"];
             else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
 
             $curLang++;
@@ -182,7 +190,9 @@
             // Actual HTML
             echo "        <li class='wikiLang'$customStyle><a id='wiki$curLang' lang='" . $lang["langCode"] . "'\n          href='$baseURL' title='" . $lang["lang"] . " - " . $lang["desc"] . "' tabindex='$tabindex'>\n";
             echo "            <div class='langName'>" . $lang["lang"] . "</div>\n";
-            echo "            <div class='articles'>" . $lang["articleCount"];
+            if(!$lang["inactive"]) {
+                echo "            <div class='articles'>" . $lang["articleCount"];
+            }
             if($lang["langCode"] != "ko") { // Korean value for articlesName includes a counter word attached to the number, so the space shouldn't be added
               echo " ";
             }
