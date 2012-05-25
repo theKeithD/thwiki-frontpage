@@ -23,9 +23,9 @@
                     "it" => array("langCode"=>"it", "lang"=>"Italiano", "desc"=>"Touhou Wiki", 
                                   "articlesName"=>"voci", "articleCount"=>"0",
                                   "searchText" => "Cerca Touhou Wiki"),
-                    "ko" => array("langCode"=>"ko", "lang"=>"한국어", "desc"=>"Touhou Wiki", 
-                                  "articlesName"=>"--", "articleCount"=>"0",
-                                  "searchText" => "Search Touhou Wiki--"),
+                    "ko" => array("langCode"=>"ko", "lang"=>"한국어", "desc"=>"동방프로젝트 위키", 
+                                  "articlesName"=>"개의 문서", "articleCount"=>"0",
+                                  "searchText" => "동방프로젝트 위키 내 검색"),
                     "nl" => array("langCode"=>"nl", "lang"=>"Nederlands", "desc"=>"Touhou Wiki", 
                                   "articlesName"=>"-", "articleCount"=>"0",
                                   "searchText" => "Search Touhou Wiki-"),
@@ -181,7 +181,11 @@
             // Actual HTML
             echo "        <li class='wikiLang'$customStyle><a id='wiki$curLang' lang='" . $lang["langCode"] . "'\n          href='$baseURL' title='" . $lang["lang"] . " - " . $lang["desc"] . "' tabindex='$tabindex'>\n";
             echo "            <div class='langName'>" . $lang["lang"] . "</div>\n";
-            echo "            <div class='articles'>" . $lang["articleCount"] . " " . $lang["articlesName"] . "</div>\n";
+            echo "            <div class='articles'>" . $lang["articleCount"];
+            if($lang["langCode"] != "ko") { // Korean value for articlesName includes a counter word attached to the number, so the space shouldn't be added
+              echo " ";
+            }
+            echo $lang["articlesName"] . "</div>\n";
             echo "        </a></li>\n";
         }
         unset($lang);
@@ -218,7 +222,7 @@
             </div>
             <div id='search-section-left'>
                 <input id='search-query' type='text' name='search' autocomplete='off' autofocus='autofocus' tabindex='<?php echo $tabindex + 1; ?>' />
-                <label id='search-placeholder'><?php echo "Search " . $langs[$userLang]["desc"]; ?></label>
+                <label id='search-placeholder'><?php echo $langs[$userLang]["searchText"]; ?></label>
                 <div id='search-suggestions'></div>
             </div>
         </fieldset>
