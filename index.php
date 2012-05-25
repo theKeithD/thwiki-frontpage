@@ -172,22 +172,22 @@
             $customStyle = "";
             $minRowWidth = 280;
             switch($curLang) {
-                case 1:
-                case 2:
-                    $customStyle .= " style='font-size: 120%;'"; // row 1 has larger text
                 case 3:
                 case 5:
                 case 6:
                 case 8:
-                    $customStyle .= " style='width: 33%; min-width: " . floor($minRowWidth/3) . "px;'"; // rows 2 and 3 have 3 items 
+                    $customStyle .= " style='width: 33%; min-width: " . floor($minRowWidth/3) . "px;'"; // rows 2 and 3 have 3 items
+                    break; 
                 case 4:
                 case 7:
                     $customStyle .= " style='width: 34%; min-width: " . floor($minRowWidth/3) . "px;'"; // rows 2 and 3 have 3 items (middle items are slightly wider to make it add up to 100)
+                    break;
                 case 9:
                 case 10:
                 case 11:
                 case 12:
                     $customStyle .= " style='width: 25%; min-width: " . floor($minRowWidth/4) . "px; font-size: 70%; margin-top: 0.75em; margin-bottom: 0.25em;'"; // row 4 has 4 items and has smaller text
+                    break;
             }
             
             // Actual HTML
