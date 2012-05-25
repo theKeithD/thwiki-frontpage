@@ -209,7 +209,7 @@
                 if($a["lang"] == $b["lang"]) {
                     return 0;
                 }
-                return ($a["lang"] < $b["lang"]) ? 1 : -1;
+                return ($a["lang"] < $b["lang"]) ? -1 : 1;
             }
             return ($a["articleCount"] < $b["articleCount"]) ? 1 : -1;
         }
