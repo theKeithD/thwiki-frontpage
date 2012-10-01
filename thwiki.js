@@ -9,6 +9,7 @@ var curItem = 1;
 
 /* Behold, the clump of data that so much of this page depends on. */
 var langTitles = new Object;
+langTitles['de'] = ["Touhou Wiki", "Deutsch", "Touhou Wiki Durchsuchen"];
 langTitles['en'] = ["Touhou Wiki", "English", "Search Touhou Wiki"];
 langTitles['es'] = ["Touhou Wiki", "Español", "Buscar Touhou Wiki"];
 langTitles['fr'] = ["Touhou Wiki", "Français", "Rechercher Touhou Wiki"];

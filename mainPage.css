@@ -125,7 +125,7 @@ a:hover {
 .wikiLang a .articles {
 	font-size: smaller;
 }
-.wikiLang:nth-child(3), .wikiLang:nth-child(6), .wikiLang:nth-child(9) {
+.wikiLang:nth-child(3), .wikiLang:nth-child(6), .wikiLang:nth-child(10) { /* clear for each row */
 	clear: both;
 }
 
@@ -188,7 +188,7 @@ a:hover {
 #search-section-left {
 	display: block;
 	overflow: hidden;
-	width: 66%;
+	width: 65%;
 }
 #search-section-right {
 	position: relative;

@@ -11,7 +11,10 @@
 </head>
 <body>
 <?php
-    $langs = array( "en" => array("langCode"=>"en", "lang"=>"English", "desc"=>"Touhou Wiki", 
+    $langs = array( "de" => array("langCode"=>"de", "lang"=>"Deutsch", "desc"=>"Touhou Wiki",
+                                  "articlesName"=>"artikel", "articleCount"=>"0",
+                                  "searchText" => "Touhou Wiki Durchsuchen"),
+                    "en" => array("langCode"=>"en", "lang"=>"English", "desc"=>"Touhou Wiki", 
                                   "articlesName"=>"articles", "articleCount"=>"0",
                                   "searchText" => "Search Touhou Wiki"), 
                     "es" => array("langCode"=>"es", "lang"=>"Español", "desc"=>"Touhou Wiki", 
@@ -73,33 +76,44 @@
     <div id='wiki-content'>
     <ul id='wiki-langs'>
 <?php
-        // populate article counts
-        foreach($langs as &$lang) {
-            if($lang["inactive"] || $lang["noAPICheck"]) { // ignore language entries with either of these flags set
-                continue;
+        // check for cached article counts, otherwise manually populate
+        $cacheURL = "articlecount-cache/article_counts.json";
+        if(file_exists($cacheURL)) { // cached population
+            $cachedCounts = file_get_contents($cacheURL);
+            $cachedArray = json_decode($cachedCounts, true);
+            foreach($cachedArray as $cachedLang => $cachedCount) {
+                $langs[$cachedLang]["articleCount"] = $cachedCount;
             }
-            if($lang["external"] && $lang["baseURL"]) $baseURL = $lang["baseURL"];
-            else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
-            
-            $curl = curl_init("" . $baseURL . $requestCall);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-            curl_setopt($curl, CURLOPT_TIMEOUT, 5 );
-            
-            $apiResponse = curl_exec($curl);
-            $apiResponse = @mb_convert_encoding($apiResponse, 'HTML-ENTITIES', 'utf-8');
-            $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-            curl_close($curl);
-            
-            // TODO: Implement alternate/more effective sanity check. (200 OK is received even when the URL doesn't exist, which results in parsing errors)
-            if($httpStatus == "200") {
-                $domAPI = new DomDocument();
-                $domAPI->loadXML($apiResponse);
-            
-                $lang["articleCount"] = $domAPI->documentElement->getElementsByTagName('query')->item(0)->getElementsByTagName('statistics')->item(0)->attributes->getNamedItem('articles')->nodeValue; // behold, an article count!
+        } else { // manual population
+            // populate article counts
+            foreach($langs as &$lang) {
+                if((isset($lang["inactive"]) && $lang["inactive"]) || (isset($lang["noAPICheck"]) && $lang["noAPICheck"])) { // ignore language entries with either of these flags set
+                    continue;
+                }
+                
+                if((isset($lang["external"]) && $lang["external"]) && $lang["baseURL"]) $baseURL = $lang["baseURL"];
+                else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
+                
+                $curl = curl_init("" . $baseURL . $requestCall);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
+                curl_setopt($curl, CURLOPT_TIMEOUT, 10 );
+                
+                $apiResponse = curl_exec($curl);
+                $apiResponse = @mb_convert_encoding($apiResponse, 'HTML-ENTITIES', 'utf-8');
+                $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    
+                curl_close($curl);
+                
+                // TODO: Implement alternate/more effective sanity check. (200 OK is received even when the URL doesn't exist, which results in parsing errors)
+                if($httpStatus == "200") {
+                    $domAPI = new DomDocument();
+                    $domAPI->loadXML($apiResponse);
+                
+                    $lang["articleCount"] = $domAPI->documentElement->getElementsByTagName('query')->item(0)->getElementsByTagName('statistics')->item(0)->attributes->getNamedItem('articles')->nodeValue; // behold, an article count!
+                }
             }
+            unset($lang);
         }
-        unset($lang);
 
         // sort languages according to article count
         uasort($langs, "compare_articles");
@@ -160,7 +174,7 @@
             }
             
             
-            if($lang["external"] == true && $lang["baseURL"] == true) $baseURL = $lang["baseURL"];
+            if((isset($lang["external"]) && $lang["external"] == true) && $lang["baseURL"] == true) $baseURL = $lang["baseURL"];
             else $baseURL = "http://" . $lang["langCode"] . ".touhouwiki.net/";
 
             $curLang++;
@@ -172,26 +186,33 @@
             switch($curLang) {
                 case 3:
                 case 5:
-                case 6:
-                case 8:
-                    $customStyle .= " style='width: 33%; min-width: " . floor($minRowWidth/3) . "px;'"; // rows 2 and 3 have 3 items
+                    $customStyle .= " style='width: 33%; min-width: " . floor($minRowWidth/3) . "px;'"; // row 2 has 3 items
                     break; 
                 case 4:
-                case 7:
-                    $customStyle .= " style='width: 34%; min-width: " . floor($minRowWidth/3) . "px;'"; // rows 2 and 3 have 3 items (middle items are slightly wider to make it add up to 100)
+                    $customStyle .= " style='width: 34%; min-width: " . floor($minRowWidth/3) . "px;'"; // row 2 has 3 items (middle item slightly wider to make it add up to 100)
                     break;
+                case 6:
+                case 7:
+                case 8:
                 case 9:
+                    $customStyle .= " style='width: 25%; min-width: " . floor($minRowWidth/4) . "px;'"; // row 3 has 4 items
+                    break;
                 case 10:
+                    $customStyle .= " style='width: 20%; min-width: " . floor($minRowWidth/4) . "px; font-size: 70%; margin-top: 0.75em; margin-bottom: 0.25em; margin-left: 10%;'"; // row 4 has 4 items and has smaller text
+                    break;
                 case 11:
                 case 12:
-                    $customStyle .= " style='width: 25%; min-width: " . floor($minRowWidth/4) . "px; font-size: 70%; margin-top: 0.75em; margin-bottom: 0.25em;'"; // row 4 has 4 items and has smaller text
+                    $customStyle .= " style='width: 20%; min-width: " . floor($minRowWidth/4) . "px; font-size: 70%; margin-top: 0.75em; margin-bottom: 0.25em;'"; // row 4 has 4 items and has smaller text
+                    break;
+                case 13:
+                    $customStyle .= " style='width: 20%; min-width: " . floor($minRowWidth/4) . "px; font-size: 70%; margin-top: 0.75em; margin-bottom: 0.25em; margin-right: 10%;'"; // row 4 has 4 items and has smaller text
                     break;
             }
             
             // Actual HTML
             echo "        <li class='wikiLang'$customStyle><a id='wiki$curLang' lang='" . $lang["langCode"] . "'\n          href='$baseURL' title='" . $lang["lang"] . " - " . $lang["desc"] . "' tabindex='$tabindex'>\n";
             echo "            <div class='langName'>" . $lang["lang"] . "</div>\n";
-            if(!$lang["inactive"]) {
+            if(!(isset($lang["inactive"]) && $lang["inactive"])) {
                 echo "            <div class='articles'>" . $lang["articleCount"];
                 if($lang["langCode"] != "ko") { // Korean value for articlesName includes a counter word attached to the number, so the space shouldn't be added
                 echo " ";
@@ -248,5 +269,19 @@
     <!-- Scripts of all sorts -->
     <script src='jquery-and-plugins.js' type='text/javascript'></script>
     <script src='thwiki.js' type='text/javascript'></script>
+    <!-- Google Analytics -->
+    <script type="text/javascript">        
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-34275641-1']);
+        _gaq.push(['_setDomainName', 'touhouwiki.net']);
+        _gaq.push(['_trackPageview']);
+        
+       (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        
+    </script>
 </body>
 </html>
